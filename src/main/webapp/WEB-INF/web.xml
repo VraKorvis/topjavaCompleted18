@@ -6,10 +6,14 @@
 
     <display-name>Topjava</display-name>
 
+    <listener>
+        <listener-class>ru.javawebinar.topjava.web.ContextListener</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>userServlet</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.UserServlet</servlet-class>
-        <load-on-startup>0</load-on-startup>
+        <!--<load-on-startup>0</load-on-startup>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>userServlet</servlet-name>
@@ -19,7 +23,7 @@
     <servlet>
         <servlet-name>meals</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.MealsServlet</servlet-class>
-        <load-on-startup>0</load-on-startup>
+        <!--<load-on-startup>0</load-on-startup>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>meals</servlet-name>

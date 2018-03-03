@@ -20,19 +20,27 @@
             <th>LocalDateTime</th>
             <th>Description</th>
             <th>Calories</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-        <jsp:useBean id="mealsList" scope="request" type="java.util.List"/>
+
+        <jsp:useBean id="mealsList" scope="application" type="java.util.List"/>
         <c:forEach var="meal" items="${mealsList}">
             <tr style="color: ${meal.isExceed() ?  'red' : 'green'}">
-                <%--<th><javatime:parseLocalDate value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm"/></th>--%>
                 <td>
-                    <fmt:parseDate value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
-                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/>
+                <javatime:parseLocalDate value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm" var="parseDate"/>
+                <javatime:format value="${parseDate}"/>
                 </td>
+                <%--<td>--%>
+                    <%--<fmt:parseDate value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>--%>
+                    <%--<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/>--%>
+                <%--</td>--%>
                 <td>${meal.getDescription()}</td>
                 <td>${meal.getCalories()}</td>
+                <td style="color: #000000">Edit</td>
+                <td style="color: #000000">Delete</td>
             </tr>
         </c:forEach>
         </tbody>
