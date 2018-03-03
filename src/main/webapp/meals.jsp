@@ -14,21 +14,21 @@
 <h2>User Meals</h2>
 
 <div>
-    <table border="2">
+    <table style="background: beige" border="2">
         <thead>
         <tr>
-            <th>LocalDateTime</th>
-            <th>Description</th>
-            <th>Calories</th>
-            <th></th>
-            <th></th>
+            <th style="width: 30%" >Дата/Время</th>
+            <th style="width: 30%">Описание</th>
+            <th style="width: 20%">Калории</th>
+            <th style="width: 10%"></th>
+            <th style="width: 10%"></th>
         </tr>
         </thead>
         <tbody>
 
         <jsp:useBean id="mealsList" scope="application" type="java.util.List"/>
         <c:forEach var="meal" items="${mealsList}">
-            <tr style="color: ${meal.isExceed() ?  'red' : 'green'}">
+            <tr style="background: ${meal.isExceed() ?  'red' : 'green'}">
                 <td>
                 <javatime:parseLocalDate value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm" var="parseDate"/>
                 <javatime:format value="${parseDate}"/>
