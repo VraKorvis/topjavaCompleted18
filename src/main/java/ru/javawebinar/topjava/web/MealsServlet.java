@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealsMemoryDao;
+import ru.javawebinar.topjava.dao.MealsDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -25,11 +25,11 @@ public class MealsServlet extends HttpServlet {
     private static final String LIST_MEALS = "/meals.jsp";
     private static final String EDIT_OR_ADD = "/edit.jsp";
 
-    private MealsMemoryDao mealsDao;
+    private MealsDaoImpl mealsDao;
 
     public MealsServlet() {
         super();
-        this.mealsDao = new MealsMemoryDao();
+        this.mealsDao = new MealsDaoImpl();
     }
 
     @Override

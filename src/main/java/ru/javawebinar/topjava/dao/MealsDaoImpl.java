@@ -7,13 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class MealsMemoryDao implements MealsDao {
+public class MealsDaoImpl implements MealsDao {
 
-    private static final Logger log = getLogger(MealsMemoryDao.class);
+    private static final Logger log = getLogger(MealsDaoImpl.class);
 
     private ConcurrentHashMap<Integer, Meal> meals;
 
-    public MealsMemoryDao() {
+    public MealsDaoImpl() {
         this.meals = MealsDataBase.getMeals();
     }
 

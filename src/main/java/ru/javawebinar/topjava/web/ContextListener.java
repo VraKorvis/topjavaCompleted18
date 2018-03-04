@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 
-import ru.javawebinar.topjava.dao.MealsMemoryDao;
+import ru.javawebinar.topjava.dao.MealsDaoImpl;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -20,10 +20,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class ContextListener implements ServletContextListener {
     private static final Logger log = getLogger(ContextListener.class);
 
-    private MealsMemoryDao mealsDao;
+    private MealsDaoImpl mealsDao;
 
     public ContextListener() {
-        this.mealsDao = new MealsMemoryDao();
+        this.mealsDao = new MealsDaoImpl();
     }
 
     @Override
