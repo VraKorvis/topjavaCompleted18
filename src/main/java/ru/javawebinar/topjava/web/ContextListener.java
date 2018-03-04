@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealsDataBase;
-import ru.javawebinar.topjava.model.Meal;
+
+import ru.javawebinar.topjava.dao.MealsMemoryDao;
 import ru.javawebinar.topjava.model.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -11,9 +11,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.time.LocalTime;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -21,10 +20,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class ContextListener implements ServletContextListener {
     private static final Logger log = getLogger(ContextListener.class);
 
-    private static final CopyOnWriteArraySet<Meal> meals;
+    private MealsMemoryDao mealsDao;
 
-    static {
-        meals = MealsDataBase.getMeals();
+    public ContextListener() {
+        this.mealsDao = new MealsMemoryDao();
     }
 
     @Override
@@ -32,14 +31,14 @@ public class ContextListener implements ServletContextListener {
         log.debug("load contextListener");
         final ServletContext servletContext = servletContextEvent.getServletContext();
 
-        List<MealWithExceed> mealsListWithExceed = MealsUtil.getFilteredWithExceededInOnePass(meals, LocalTime.MIN, LocalTime.MAX, 2000);
+        List<MealWithExceed> mealsListWithExceed = MealsUtil.getFilteredWithExceededInOnePass(mealsDao.getMeals().values(), LocalTime.MIN, LocalTime.MAX, 2000);
         servletContext.setAttribute("mealsList", mealsListWithExceed);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        log.debug("clear mealsList");
-        meals.clear();
+        log.debug("clear meals");
+        mealsDao.getMeals().clear();
     }
 
 }

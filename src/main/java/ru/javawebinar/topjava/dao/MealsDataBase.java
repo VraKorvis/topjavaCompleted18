@@ -4,36 +4,63 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MealsDataBase {
+class MealsDataBase {
 
-    private static final CopyOnWriteArraySet<Meal> meals;
+    private static final ConcurrentHashMap<Integer, Meal> meals;
+
+    private static final AtomicInteger lastId = new AtomicInteger();
 
     static {
-        meals = new CopyOnWriteArraySet<>(Arrays.asList(
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510),
-
-                new Meal(LocalDateTime.of(2015, Month.MAY, 28, 9, 0), "Завтрак", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 28, 12, 0), "Обед", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 28, 20, 0), "Ужин", 501),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 29, 11, 0), "Завтрак", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 29, 14, 0), "Обед", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 29, 20, 0), "Ужин", 500)
-        ));
+        meals = new ConcurrentHashMap<>();
+        int id = lastId.getAndIncrement();
+        Meal meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 28, 9, 0), "Завтрак", 500);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 28, 12, 0), "Обед", 1000);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 28, 20, 0), "Ужин", 501);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 29, 11, 0), "Завтрак", 1000);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 29, 14, 0), "Обед", 500);
+        meals.put(id, meal);
+        id = lastId.getAndIncrement();
+        meal = new Meal(id, LocalDateTime.of(2015, Month.MAY, 29, 20, 0), "Ужин", 500);
+        meals.put(id, meal);
     }
 
     private MealsDataBase() {
     }
 
-    public static CopyOnWriteArraySet<Meal> getMeals() {
+    static ConcurrentHashMap<Integer, Meal> getMeals() {
         return meals;
+    }
+
+    static AtomicInteger getLastId() {
+        return lastId;
     }
 }

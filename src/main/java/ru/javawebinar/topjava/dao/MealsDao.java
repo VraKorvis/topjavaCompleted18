@@ -4,8 +4,7 @@ import ru.javawebinar.topjava.model.Meal;
 
 public interface MealsDao {
 
-    void add(Meal meal);
-    void update(Meal meal);
-    void delete(Meal meal);
+    void addOrUpdate(Meal meal);
+    void delete(int id);
 
 }
