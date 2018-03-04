@@ -37,37 +37,39 @@ public class MealsServlet extends HttpServlet {
         log.debug("redirect to meals");
         request.setCharacterEncoding("UTF-8");
 
-        String forward = "";
+        String forward;
         final String action = request.getParameter("action");
 
-        if (action.equalsIgnoreCase("delete")) {
-
-            forward = LIST_MEALS;
-
-            final int mealId = Integer.parseInt(request.getParameter("id"));
-            mealsDao.delete(mealId);
-            setAttrListOfMeals(request);
-
-        } else if (action.equalsIgnoreCase("edit")) {
-
-            forward = EDIT_OR_ADD;
-
-            final int id = Integer.parseInt(request.getParameter("id"));
-            Meal meal = mealsDao.getMeals().get(id);
-
-            request.setAttribute("meal", meal);
-
-        } else if (action.equalsIgnoreCase("listMeals")) {
-
+        if (action == null) {
             forward = LIST_MEALS;
             setAttrListOfMeals(request);
+            request.getRequestDispatcher(forward).forward(request, response);
 
-        } else if (action.equalsIgnoreCase("add")) {
-            forward = EDIT_OR_ADD;
+        } else {
+            switch (action.toLowerCase()) {
+                case "delete":
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    mealsDao.delete(id);
+                    break;
+                case "edit":
+                    forward = EDIT_OR_ADD;
+                    id = Integer.parseInt(request.getParameter("id"));
+                    Meal meal = mealsDao.getMeals().get(id);
+                    request.setAttribute("meal", meal);
+                    request.getRequestDispatcher(forward).forward(request, response);
+                    break;
+                case "add":
+                    forward = EDIT_OR_ADD;
+                    request.getRequestDispatcher(forward).forward(request, response);
+                    break;
+                case "listMeals":
+                    forward = LIST_MEALS;
+                    setAttrListOfMeals(request);
+                    request.getRequestDispatcher(forward).forward(request, response);
+                    break;
+            }
         }
-
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
+        response.sendRedirect("meals");
     }
 
     @Override
