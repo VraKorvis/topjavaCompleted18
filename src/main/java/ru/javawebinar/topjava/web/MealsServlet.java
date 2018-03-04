@@ -44,7 +44,6 @@ public class MealsServlet extends HttpServlet {
             forward = LIST_MEALS;
             setAttrListOfMeals(request);
             request.getRequestDispatcher(forward).forward(request, response);
-
         } else {
             switch (action.toLowerCase()) {
                 case "delete":
@@ -62,11 +61,6 @@ public class MealsServlet extends HttpServlet {
                     forward = EDIT_OR_ADD;
                     request.getRequestDispatcher(forward).forward(request, response);
                     break;
-                case "listMeals":
-                    forward = LIST_MEALS;
-                    setAttrListOfMeals(request);
-                    request.getRequestDispatcher(forward).forward(request, response);
-                    break;
             }
         }
         response.sendRedirect("meals");
@@ -74,11 +68,11 @@ public class MealsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("redirect to meals");
         request.setCharacterEncoding("UTF-8");
 
         final String description = request.getParameter("description");
         final int calories = Integer.parseInt(request.getParameter("calories"));
-
         final String dateAndTime = request.getParameter("date") + " " + request.getParameter("time");
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         final LocalDateTime dateTime = LocalDateTime.parse(dateAndTime, formatter);
