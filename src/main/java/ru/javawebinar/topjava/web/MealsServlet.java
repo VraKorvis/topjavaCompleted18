@@ -30,8 +30,9 @@ public class MealsServlet extends HttpServlet {
 
     private MealsDao mealsDao;
 
-    public MealsServlet() {
-        super();
+    @Override
+    public void init() throws ServletException {
+        super.init();
         this.mealsDao = new MealsDaoImpl();
     }
 

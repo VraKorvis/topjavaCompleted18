@@ -23,6 +23,8 @@
     Date/time :
     <label><input type="date" name="date" value="${parseDate}" required></label>
     <label><input type="time" name="time" value="${parseTime}" required> </label> <br/>
+    <%--<javatime:parseLocalDateTime value="${requestScope.meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parseDateTime"/>--%>
+    <%--<label><input type="datetime-local" name="date" value="${parseDateTime}" required></label><br/>--%>
 
     Description : <label> <input type="text" name="description" value="${requestScope.meal.description}" required></label> <br/>
 
