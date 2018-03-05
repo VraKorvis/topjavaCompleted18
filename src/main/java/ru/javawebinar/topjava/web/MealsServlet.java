@@ -23,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MealsServlet extends HttpServlet {
     private final Logger log = getLogger(MealsServlet.class);
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     private final String LIST_MEALS = "/meals.jsp";
     private final String EDIT_OR_ADD = "/edit.jsp";
@@ -74,7 +74,9 @@ public class MealsServlet extends HttpServlet {
 
         final String description = request.getParameter("description");
         final int calories = Integer.parseInt(request.getParameter("calories"));
-        final String dateAndTime = request.getParameter("date") + " " + request.getParameter("time");
+//        final String dateAndTime = request.getParameter("date") + " " + request.getParameter("time");
+        final String dateAndTime = request.getParameter("dateTime");
+        System.out.println(dateAndTime);
 
         final LocalDateTime dateTime = LocalDateTime.parse(dateAndTime, formatter);
 
