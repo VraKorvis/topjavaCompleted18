@@ -21,12 +21,12 @@ import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealsServlet extends HttpServlet {
-    private static final Logger log = getLogger(MealsServlet.class);
+    private final Logger log = getLogger(MealsServlet.class);
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private static final String LIST_MEALS = "/meals.jsp";
-    private static final String EDIT_OR_ADD = "/edit.jsp";
+    private final String LIST_MEALS = "/meals.jsp";
+    private final String EDIT_OR_ADD = "/edit.jsp";
 
     private MealsDao mealsDao;
 
