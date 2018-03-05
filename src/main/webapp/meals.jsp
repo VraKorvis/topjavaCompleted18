@@ -46,7 +46,7 @@
     <table>
         <thead>
         <tr>
-            <%--<th>ID</th>--%>
+            <th>ID</th>
             <th>Дата/Время</th>
             <th>Описание</th>
             <th>Калории</th>
@@ -59,7 +59,7 @@
         <jsp:useBean id="mealsList" scope="request" type="java.util.Collection"/>
         <c:forEach var="meal" items="${requestScope.mealsList}">
             <tr style="color:  ${meal.isExceed() ?  '#ff3e25' : '#33bf49 '}">
-                <%--<td>${meal.getId()}</td>--%>
+                <td>${meal.getId()}</td>
                 <td>
                     <javatime:parseLocalDateTime value="${meal.getDateTime()}" pattern="yyyy-MM-dd'T'HH:mm" var="parsed"/>
                     <javatime:format value="${parsed}" style="FS"/>

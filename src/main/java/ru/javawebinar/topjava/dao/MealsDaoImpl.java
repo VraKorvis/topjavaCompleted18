@@ -22,38 +22,38 @@ public class MealsDaoImpl implements MealsDao {
 
     static {
         meals = new ConcurrentHashMap<>();
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 28, 9, 0), "Завтрак", 500));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 28, 12, 0), "Обед", 1000));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 28, 20, 0), "Ужин", 501));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 29, 11, 0), "Завтрак", 1000));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 29, 14, 0), "Обед", 500));
-        meals.put(lastId.get(), new Meal(lastId.incrementAndGet(), LocalDateTime.of(2015, Month.MAY, 29, 20, 0), "Ужин", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 28, 9, 0), "Завтрак", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 28, 12, 0), "Обед", 1000));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 28, 20, 0), "Ужин", 501));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 29, 11, 0), "Завтрак", 1000));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 29, 14, 0), "Обед", 500));
+        meals.put(lastId.incrementAndGet(), new Meal(lastId.get(), LocalDateTime.of(2015, Month.MAY, 29, 20, 0), "Ужин", 500));
     }
 
     @Override
-    public Meal getId(int id) {
-        return null;
+    public Meal get(int id) {
+        return meals.get(id);
     }
 
     @Override
-    public void addOrUpdate(Meal meal) {
+    public Meal addOrUpdate(Meal meal) {
         log.debug("add/update meal " + meal);
         if (meal.getId() == 0) {
             meal.setId(lastId.incrementAndGet());
         }
         meals.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
     public void delete(int id) {
-        log.debug("removing meal by id " + id);
-        meals.remove(id);
+        log.debug("removing meal by id " + meals.remove(id));
     }
 
     @Override

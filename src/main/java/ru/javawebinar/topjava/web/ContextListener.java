@@ -31,14 +31,14 @@ public class ContextListener implements ServletContextListener {
         log.debug("load contextListener");
         final ServletContext servletContext = servletContextEvent.getServletContext();
 
-        List<MealWithExceed> mealsListWithExceed = MealsUtil.getFilteredWithExceededInOnePass(mealsDao.getMeals().values(), LocalTime.MIN, LocalTime.MAX, 2000);
+        List<MealWithExceed> mealsListWithExceed = MealsUtil.getFilteredWithExceededInOnePass(mealsDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
         servletContext.setAttribute("mealsList", mealsListWithExceed);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         log.debug("clear meals");
-        mealsDao.getMeals().clear();
+        mealsDao.getAll().clear();
     }
 
 }

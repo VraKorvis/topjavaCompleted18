@@ -6,8 +6,8 @@ import java.util.Collection;
 
 public interface MealsDao {
 
-    Meal getId(int id);
-    void addOrUpdate(Meal meal);
+    Meal get(int id);
+    Meal addOrUpdate(Meal meal);
     void delete(int id);
     Collection<Meal> getAll();
 
