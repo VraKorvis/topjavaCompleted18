@@ -54,13 +54,9 @@ public class MealsServlet extends HttpServlet {
                     mealsDao.delete(id);
                     break;
                 case "edit":
-                    forward = EDIT_OR_ADD;
                     id = Integer.parseInt(request.getParameter("id"));
-                    System.out.println(id);
                     Meal meal = mealsDao.get(id);
                     request.setAttribute("meal", meal);
-                    request.getRequestDispatcher(forward).forward(request, response);
-                    break;
                 case "add":
                     forward = EDIT_OR_ADD;
                     request.getRequestDispatcher(forward).forward(request, response);
