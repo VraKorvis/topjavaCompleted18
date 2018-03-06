@@ -28,7 +28,7 @@
 
     Description : <label> <input type="text" name="description" value="${requestScope.meal.description}" required></label> <br/>
 
-    Callories : <label> <input type="text" name="calories" value="${requestScope.meal.calories}" required></label> <br/>
+    Callories : <label> <input type="number" min="0" name="calories" value="${requestScope.meal.calories}" required></label> <br/>
 
     <input type="submit" value="Submit"/>  <input type="button" onclick="history.back();" value="Back"/>
 
