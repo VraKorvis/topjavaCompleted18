@@ -12,6 +12,12 @@
             </bean>
     -->
 
+    <bean class="ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl" id="inMemoryUserRepositoryImpl"/>
+
+    <bean class="ru.javawebinar.topjava.service.UserServiceImpl">
+        <constructor-arg name="repository" ref="inMemoryUserRepositoryImpl"/>
+    </bean>
+
     <!-- Not necessary, already included with component-scan -->
     <!--<context:annotation-config/>-->
 
