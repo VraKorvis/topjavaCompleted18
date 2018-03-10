@@ -2,8 +2,10 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.AbstractNamedEntity;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
@@ -11,6 +13,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepositoryImpl implements UserRepository {
@@ -19,14 +22,23 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
 
+    @Autowired
+    private InMemoryMealRepositoryImpl inMemoryMealRepository;
+
     {
-        this.save(new User(null, "vra", "vra@gmail.com", "123", Role.ROLE_USER));
+        this.save(new User(1, "vra", "vra@gmail.com", "123", Role.ROLE_USER));
+        this.save(new User(2, "vra2", "vra2@gmail.com", "123", Role.ROLE_USER));
+
     }
 
     @Override
     public boolean delete(int id) {
         log.info("delete {}", id);
-        return true;
+        return repository.remove(id) != null;
+    }
+
+    public List<Meal> getMeals(int id){
+        return inMemoryMealRepository.getAll().stream().filter(x-> x.getUserId().equals(id)).collect(Collectors.toList());
     }
 
     @Override
