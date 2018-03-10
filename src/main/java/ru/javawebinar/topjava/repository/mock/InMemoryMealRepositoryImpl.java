@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -24,6 +25,14 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
+    public List<Meal> getAll(int id){
+        return repository.values()
+                .stream()
+                .sorted((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()))
+                .filter(x-> x.getUserId().equals(id)).collect(Collectors.toList());
+    }
+
+    @Override
     public Meal save(Meal meal) {
         log.info("save {}", meal);
         if (meal.isNew()) {
@@ -36,9 +45,9 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         log.info("delete {}", id);
-        repository.remove(id);
+        return repository.remove(id) != null;
     }
 
     @Override
@@ -47,12 +56,5 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return repository.get(id);
     }
 
-    @Override
-    public List<Meal> getAll() {
-        log.info("getAll");
-        List<Meal> meals = new ArrayList<>(repository.values());
-        meals.sort((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()));
-        return meals;
-    }
 }
 

@@ -24,37 +24,36 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-
-    public List<MealWithExceed> getAll() {
+    public List<MealWithExceed> getAll(int userId) {
         log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return MealsUtil.getWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public List<MealWithExceed> getAllFiltredDateAndTime(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+    public List<MealWithExceed> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         log.info("getAll");
-        return MealsUtil.getFilteredWithExceeded(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+        return MealsUtil.getFilteredWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
     }
 
-    public Meal get(int id) {
+    public Meal get(int id, int userId) {
         log.info("get {}", id);
-        return service.get(id);
+        return service.get(id, userId);
     }
 
-    public Meal create(Meal meal) {
+    public Meal create(Meal meal, int userId) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal);
+        return service.create(meal, userId);
     }
 
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         log.info("delete {}", id);
-        service.delete(id);
+        service.delete(id, userId);
     }
 
-    public void update(Meal meal, int id) {
+    public void update(Meal meal, int id, int userId) {
         log.info("update {} with id={}", meal, id);
         assureIdConsistent(meal, id);
-        service.update(meal);
+        service.update(meal, userId);
     }
 
 }
