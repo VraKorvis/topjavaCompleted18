@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
@@ -21,39 +22,42 @@ public class MealRestController {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private MealService service;
 
-    public List<MealWithExceed> getAll(int userId) {
-        log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    @Autowired
+    public MealRestController(MealService service) {
+        this.service = service;
     }
 
-    public List<MealWithExceed> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+    public List<MealWithExceed> getAll() {
         log.info("getAll");
-        return MealsUtil.getFilteredWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+        return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public Meal get(int id, int userId) {
+    public List<MealWithExceed> getAllFiltredDateAndTime(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        log.info("getAll");
+        return MealsUtil.getFilteredWithExceeded(service.getAll(AuthorizedUser.id), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+    }
+
+    public Meal get(int id) {
         log.info("get {}", id);
-        return service.get(id, userId);
+        return service.get(id, AuthorizedUser.id);
     }
 
-    public Meal create(Meal meal, int userId) {
+    public Meal create(Meal meal) {
         log.info("create {}", meal);
-        checkNew(meal);
-        return service.create(meal, userId);
+        return service.create(meal, AuthorizedUser.id);
     }
 
-    public void delete(int id, int userId) {
+    public void delete(int id) {
         log.info("delete {}", id);
-        service.delete(id, userId);
+        service.delete(id, AuthorizedUser.id);
     }
 
-    public void update(Meal meal, int id, int userId) {
-        log.info("update {} with id={}", meal, id);
+    public void update(Meal meal, int id) {
+        log.info("update {} with id={}", meal, AuthorizedUser.id);
         assureIdConsistent(meal, id);
-        service.update(meal, userId);
+        service.update(meal, AuthorizedUser.id);
     }
 
 }

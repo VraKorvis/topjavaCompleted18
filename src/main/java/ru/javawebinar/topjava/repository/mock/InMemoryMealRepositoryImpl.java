@@ -22,14 +22,15 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     {
         MealsUtil.MEALS.forEach(this::save);
+        repository.forEach((k,v)-> System.out.println(k+" " + v));
     }
 
     @Override
-    public List<Meal> getAll(int id){
+    public List<Meal> getAll(int userId){
         return repository.values()
                 .stream()
                 .sorted((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()))
-                .filter(x-> x.getUserId().equals(id)).collect(Collectors.toList());
+                .filter(x-> x.getUserId().equals(userId)).collect(Collectors.toList());
     }
 
     @Override

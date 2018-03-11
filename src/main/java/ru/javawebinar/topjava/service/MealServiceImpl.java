@@ -22,7 +22,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal create(Meal meal, int userId) {
-        if (meal.getUserId()==userId){
+        if (meal.getUserId() == userId) {
             return repository.save(meal);
         } else throw new NotFoundException("id=" + userId);
     }
@@ -34,9 +34,9 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal get(int id, int userId) throws NotFoundException {
-        Meal meal = repository.get(id);
-        if (meal.getUserId()==userId){
-           return checkNotFoundWithId(meal, id);
+        Meal meal = checkNotFoundWithId(repository.get(id), id);
+        if (meal.getUserId() == userId) {
+            return meal;
         } else throw new NotFoundException("id=" + id);
     }
 

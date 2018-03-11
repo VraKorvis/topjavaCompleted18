@@ -4,18 +4,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--
-            <bean class="ru.javawebinar.topjava.repository.mock.MockUserRepositoryImpl" id="mockUserRepository"/>
 
-            <bean class="ru.javawebinar.topjava.service.UserServiceImpl">
-                <constructor-arg name="repository" ref="mockUserRepository"/>
-            </bean>
-    -->
+    <!--<bean class="ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl" id="inMemoryMealRepository"/>-->
+
+    <!--<bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mealService">-->
+        <!--<constructor-arg name="repository" ref="inMemoryMealRepository"/>-->
+    <!--</bean>-->
+
+    <!--<bean class="ru.javawebinar.topjava.web.meal.MealRestController" id="mealRestController">-->
+        <!--<constructor-arg name="service" ref="mealService"/>-->
+    <!--</bean>-->
+
 
     <!--<bean class="ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl" id="inMemoryUserRepositoryImpl"/>-->
 
     <!--<bean class="ru.javawebinar.topjava.service.UserServiceImpl">-->
-        <!--<constructor-arg name="repository" ref="inMemoryUserRepositoryImpl"/>-->
+    <!--<constructor-arg name="repository" ref="inMemoryUserRepositoryImpl"/>-->
     <!--</bean>-->
 
     <!-- Not necessary, already included with component-scan -->
