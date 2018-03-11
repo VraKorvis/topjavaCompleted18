@@ -22,7 +22,6 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     {
         MealsUtil.MEALS.forEach(this::save);
-        repository.forEach((k,v)-> System.out.println(k+" " + v));
     }
 
     @Override

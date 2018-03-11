@@ -24,16 +24,18 @@
     <hr/>
     <form method="post" action="meals">
         <div>
-            От Даты: <input type="date" name="startDate" required>
-            От Времени:<input type="time" name="startTime" required>
+            От Даты: <label><input type="date" name="startDate"></label>
+            От Времени:<label> <input type="time" name="startTime"> </label>
         </div><br/>
         <div>
-            До Даты: <input type="date" name="endDate" required>
-            До Времени:<input type="time" name="endTime" required>
+            До Даты: <label> <input type="date" name="endDate"> </label>
+            До Времени:<label> <input type="time" name="endTime"> </label>
         </div>
         <button type="submit">Отфильтровать</button>
-
+        <button type="submit" name="reset">Сбросить</button>
     </form>
+
+
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>

@@ -20,7 +20,6 @@ public class SpringMain {
             adminUserController.create(new User(null, "userName", "email", "password", Role.ROLE_ADMIN));
 
             MealRestController mrc = appCtx.getBean(MealRestController.class);
-            mrc.getAll(1).forEach(System.out::print);
         }
     }
 }
