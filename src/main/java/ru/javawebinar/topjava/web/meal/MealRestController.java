@@ -38,11 +38,9 @@ public class MealRestController {
 
     public List<MealWithExceed> getAllFiltredDateAndTime(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         log.info("getAll");
-        LocalDateTime startLdt = LocalDateTime.of(startDate, startTime);
-        LocalDateTime endLdt = LocalDateTime.of(endDate, endTime);
-        return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id), MealsUtil.DEFAULT_CALORIES_PER_DAY)
+        return getAll()
                 .stream()
-                .filter(meal-> DateTimeUtil.isBetween(meal.getDateTime(), startLdt, endLdt))
+                .filter(meal-> DateTimeUtil.isBetween(meal.getDateTime(), LocalDateTime.of(startDate, startTime), LocalDateTime.of(endDate, endTime)))
                 .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime))
                 .collect(Collectors.toList());
     }

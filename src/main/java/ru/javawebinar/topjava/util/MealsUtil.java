@@ -26,10 +26,6 @@ public class MealsUtil {
             new Meal(2, LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
     );
 
-//    public static void main(String[] args) {
-//        getFilteredWithExceeded(MEALS, 2000, LocalTime.of(14, 00), LocalTime.of(20,00)).forEach(System.out::print);
-//    }
-
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
     public static List<MealWithExceed> getWithExceeded(Collection<Meal> meals, int caloriesPerDay) {
