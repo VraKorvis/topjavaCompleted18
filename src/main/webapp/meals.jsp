@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
@@ -23,6 +23,7 @@
     <a href="meals?action=create">Add Meal</a>
     <hr/>
     <form method="post" action="meals">
+        <input type="hidden" name="filter" value="${filter}">
         <div>
             От Даты: <label><input type="date" name="startDate"></label>
             От Времени:<label> <input type="time" name="startTime"> </label>

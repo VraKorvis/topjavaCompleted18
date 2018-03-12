@@ -42,7 +42,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
 
         if (request.getParameter("reset") != null) {
             log.info("reset filtred and getAll");
@@ -50,17 +49,9 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
 
-        if (action != null && (action.equals("create") || action.equals("update"))) {
-            String id = request.getParameter("id");
-            Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
-                    LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
+        String action = request.getParameter("action");
 
-            log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-            mealRestController.create(meal);
-            response.sendRedirect("meals");
-        } else {
+        if (request.getParameter("filter")!=null) {
             String startDate = request.getParameter("startDate");
             String startTime = request.getParameter("startTime");
             String endDate = request.getParameter("endDate");
@@ -73,6 +64,16 @@ public class MealServlet extends HttpServlet {
                     endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime))
             );
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        }else {
+            String id = request.getParameter("id");
+            Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
+                    LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.parseInt(request.getParameter("calories")));
+
+            log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+            mealRestController.create(meal);
+            response.sendRedirect("meals");
         }
     }
 
