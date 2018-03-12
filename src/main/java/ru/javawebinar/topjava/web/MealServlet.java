@@ -44,7 +44,7 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         if (request.getParameter("reset") != null) {
-            log.info("reset filtred and getAll");
+            log.info("reset filtr and getAll");
             request.setAttribute("meals", mealRestController.getAll());
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
@@ -64,13 +64,15 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }else {
             String id = request.getParameter("id");
-            Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
-                    LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
+           if (mealRestController.get(Integer.valueOf(id)).getUserId()==AuthorizedUser.id) {
+               Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
+                       LocalDateTime.parse(request.getParameter("dateTime")),
+                       request.getParameter("description"),
+                       Integer.parseInt(request.getParameter("calories")));
 
-            log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-            mealRestController.create(meal);
+               log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+               mealRestController.create(meal);
+           }
             response.sendRedirect("meals");
         }
     }
@@ -88,7 +90,9 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                mealRestController.delete(id);
+                if (mealRestController.get(id).getUserId()==AuthorizedUser.id) {
+                    mealRestController.delete(id);
+                }
                 response.sendRedirect("meals");
                 break;
             case "create":
