@@ -47,7 +47,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public void update(Meal meal, int userId) {
-        if (null != meal.getUserId() && meal.getUserId() == userId){
+        if (null != meal.getUserId() && meal.getUserId() == userId) {
             checkNotFoundWithId(repository.save(meal, userId), meal.getId());
         }
     }

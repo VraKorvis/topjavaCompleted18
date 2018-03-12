@@ -6,7 +6,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -72,6 +70,7 @@ public class MealServlet extends HttpServlet {
                     endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime))
             );
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
+
         } else {
             String id = request.getParameter("id");
             Meal meal = new Meal(null, id.isEmpty() ? null : Integer.valueOf(id),

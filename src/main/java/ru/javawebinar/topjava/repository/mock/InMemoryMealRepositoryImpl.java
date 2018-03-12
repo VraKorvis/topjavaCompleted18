@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
-import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
@@ -31,17 +30,17 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAll(int userId){
+    public List<Meal> getAll(int userId) {
         return repository.values()
                 .stream()
                 .sorted((meal1, meal2) -> meal2.getDateTime().compareTo(meal1.getDateTime()))
-                .filter(x-> x.getUserId().equals(userId)).collect(Collectors.toList());
+                .filter(x -> x.getUserId().equals(userId)).collect(Collectors.toList());
     }
 
-    public List<Meal> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime){
+    public List<Meal> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         return getAll(userId)
                 .stream()
-                .filter(meal-> DateTimeUtil.isBetween(meal.getDateTime(), LocalDateTime.of(startDate, startTime), LocalDateTime.of(endDate, endTime)))
+                .filter(meal -> DateTimeUtil.isBetween(meal.getDateTime(), LocalDateTime.of(startDate, startTime), LocalDateTime.of(endDate, endTime)))
                 .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime))
                 .collect(Collectors.toList());
     }
