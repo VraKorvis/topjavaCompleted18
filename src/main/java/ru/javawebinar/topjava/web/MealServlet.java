@@ -64,15 +64,15 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }else {
             String id = request.getParameter("id");
-           if (mealRestController.get(Integer.valueOf(id)).getUserId()==AuthorizedUser.id) {
-               Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
+
+               Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                        LocalDateTime.parse(request.getParameter("dateTime")),
                        request.getParameter("description"),
                        Integer.parseInt(request.getParameter("calories")));
 
                log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
                mealRestController.create(meal);
-           }
+
             response.sendRedirect("meals");
         }
     }
@@ -90,15 +90,14 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                if (mealRestController.get(id).getUserId()==AuthorizedUser.id) {
-                    mealRestController.delete(id);
-                }
+                mealRestController.delete(id);
+
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(AuthorizedUser.id, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(null, null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);

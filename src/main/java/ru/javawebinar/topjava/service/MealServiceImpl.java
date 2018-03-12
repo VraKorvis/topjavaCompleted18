@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -23,18 +26,18 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal create(Meal meal, int userId) {
         if (meal.getUserId() == userId) {
-            return repository.save(meal);
+            return repository.save(meal, userId);
         } else throw new NotFoundException("id=" + userId);
     }
 
     @Override
     public void delete(int id, int userId) throws NotFoundException {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
     @Override
     public Meal get(int id, int userId) throws NotFoundException {
-        Meal meal = checkNotFoundWithId(repository.get(id), id);
+        Meal meal = checkNotFoundWithId(repository.get(id, userId), id);
         if (meal.getUserId() == userId) {
             return meal;
         } else throw new NotFoundException("id=" + id);
@@ -45,9 +48,16 @@ public class MealServiceImpl implements MealService {
         return repository.getAll(userId);
     }
 
+
+
     @Override
     public void update(Meal meal, int userId) {
-        checkNotFoundWithId(repository.save(meal), meal.getId());
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+    }
+
+    @Override
+    public List<Meal> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        return repository.getAllFiltredDateAndTime(userId, startDate, startTime, endDate, endTime);
     }
 
 }
