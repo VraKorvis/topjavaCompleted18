@@ -49,8 +49,6 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
 
-        String action = request.getParameter("action");
-
         if (request.getParameter("filter")!=null) {
             String startDate = request.getParameter("startDate");
             String startTime = request.getParameter("startTime");
@@ -79,13 +77,13 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String action = request.getParameter("action");
+        request.setCharacterEncoding("UTF-8");
 
         String strUserID = request.getParameter("userId");
         int userId = (strUserID == null ? AuthorizedUser.id : Integer.parseInt(strUserID));
         AuthorizedUser.setId(userId);
 
+        String action = request.getParameter("action");
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
