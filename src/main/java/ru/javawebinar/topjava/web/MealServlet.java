@@ -36,7 +36,7 @@ public class MealServlet extends HttpServlet {
     @Override
     public void destroy() {
         super.destroy();
-        //  appCtx.close();
+        appCtx.close();
     }
 
     @Override
@@ -44,13 +44,13 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
-        if (request.getParameter("reset")!=null){
+        if (request.getParameter("reset") != null) {
             log.info("reset filtred and getAll");
             request.setAttribute("meals", mealRestController.getAll());
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
 
-        if (action!=null && (action.equals("create") || action.equals("update"))) {
+        if (action != null && (action.equals("create") || action.equals("update"))) {
             String id = request.getParameter("id");
             Meal meal = new Meal(AuthorizedUser.id, id.isEmpty() ? null : Integer.valueOf(id),
                     LocalDateTime.parse(request.getParameter("dateTime")),
@@ -61,11 +61,16 @@ public class MealServlet extends HttpServlet {
             mealRestController.create(meal);
             response.sendRedirect("meals");
         } else {
+            String startDate = request.getParameter("startDate");
+            String startTime = request.getParameter("startTime");
+            String endDate = request.getParameter("endDate");
+            String endTime = request.getParameter("endTime");
+
             request.setAttribute("meals", mealRestController.getAllFiltredDateAndTime(
-                    LocalDate.parse(request.getParameter("startDate")),
-                    LocalTime.parse(request.getParameter("startTime")),
-                    LocalDate.parse(request.getParameter("endDate")),
-                    LocalTime.parse(request.getParameter("endTime")))
+                    startDate == null || startDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDate),
+                    startTime == null || startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime),
+                    endDate == null || endDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDate),
+                    endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime))
             );
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }

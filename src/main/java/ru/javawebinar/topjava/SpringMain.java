@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 import ru.javawebinar.topjava.web.user.ProfileRestController;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class SpringMain {
@@ -20,6 +21,11 @@ public class SpringMain {
             adminUserController.create(new User(null, "userName", "email", "password", Role.ROLE_ADMIN));
 
             MealRestController mrc = appCtx.getBean(MealRestController.class);
+
+            LocalDateTime startLdt = LocalDateTime.now();
+            System.out.println(startLdt);
+            System.out.println(startLdt.toLocalTime());
+
         }
     }
 }

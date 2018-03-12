@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 public class MealRestController {
@@ -43,7 +42,9 @@ public class MealRestController {
         LocalDateTime endLdt = LocalDateTime.of(endDate, endTime);
         return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id), MealsUtil.DEFAULT_CALORIES_PER_DAY)
                 .stream()
-                .filter(mealWithExceed-> DateTimeUtil.isBetween(mealWithExceed.getDateTime(), startLdt, endLdt)).collect(Collectors.toList());
+                .filter(meal-> DateTimeUtil.isBetween(meal.getDateTime(), startLdt, endLdt))
+                .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime))
+                .collect(Collectors.toList());
     }
 
     public Meal get(int id) {
