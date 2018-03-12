@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -49,7 +51,15 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
 
-        if (request.getParameter("filter")!=null) {
+        String strUserID = request.getParameter("userId");
+        if (strUserID!=null){
+            int userId = Integer.parseInt(strUserID);
+            AuthorizedUser.setId(userId);
+            request.setAttribute("meals", mealRestController.getAll());
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        }
+
+        if (request.getParameter("filter") != null) {
             String startDate = request.getParameter("startDate");
             String startTime = request.getParameter("startTime");
             String endDate = request.getParameter("endDate");
@@ -62,17 +72,18 @@ public class MealServlet extends HttpServlet {
                     endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime))
             );
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
-        }else {
+        } else {
             String id = request.getParameter("id");
-
-               Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                       LocalDateTime.parse(request.getParameter("dateTime")),
-                       request.getParameter("description"),
-                       Integer.parseInt(request.getParameter("calories")));
-
-               log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-               mealRestController.create(meal);
-
+            Meal meal = new Meal(null, id.isEmpty() ? null : Integer.valueOf(id),
+                    LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.parseInt(request.getParameter("calories")));
+            if (id.isEmpty()) {
+                mealRestController.create(meal);
+            } else {
+                mealRestController.update(meal, Integer.valueOf(id));
+            }
+            log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
             response.sendRedirect("meals");
         }
     }
@@ -81,23 +92,17 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        String strUserID = request.getParameter("userId");
-        int userId = (strUserID == null ? AuthorizedUser.id : Integer.parseInt(strUserID));
-        AuthorizedUser.setId(userId);
-
         String action = request.getParameter("action");
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
                 mealRestController.delete(id);
-
-                response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(null, null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
