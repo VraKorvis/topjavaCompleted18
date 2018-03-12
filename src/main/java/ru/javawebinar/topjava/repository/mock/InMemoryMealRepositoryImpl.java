@@ -61,13 +61,14 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {}", id);
-        return repository.get(id).getUserId() == userId && repository.remove(id) != null;
+        return checkNotFoundWithId(repository.get(id), id).getUserId() == userId && repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get {}", id);
         return checkNotFoundWithId(repository.get(id), id);
+
     }
 
 }

@@ -97,6 +97,8 @@ public class MealServlet extends HttpServlet {
                 int id = getId(request);
                 log.info("Delete {}", id);
                 mealRestController.delete(id);
+                response.sendRedirect("meals");
+                break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
