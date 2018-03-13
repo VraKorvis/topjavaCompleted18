@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Repository
@@ -48,11 +47,19 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         log.info("save {}", meal);
+
         meal.setUserId(userId);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
             return meal;
+        } else {
+            Meal mealRep = repository.get(meal.getId());
+            if (mealRep != null) {
+                if (mealRep.getUserId() != userId) {
+                    return null;
+                }
+            }
         }
         // treat case: update, but absent in storage
         return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
@@ -61,13 +68,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {}", id);
-        return checkNotFoundWithId(repository.get(id), id).getUserId() == userId && repository.remove(id) != null;
+        return repository.get(id).getUserId() == userId && repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get {}", id);
-        return checkNotFoundWithId(repository.get(id), id);
+        return repository.get(id);
 
     }
 
