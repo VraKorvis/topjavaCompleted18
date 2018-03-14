@@ -15,11 +15,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 public class MealRestController {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private MealService service;
 
@@ -35,7 +36,7 @@ public class MealRestController {
 
     public List<MealWithExceed> getAllFiltredDateAndTime(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAllFiltredDateAndTime(AuthorizedUser.id, startDate, startTime, endDate, endTime), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return service.getAllFiltredDateAndTime(AuthorizedUser.id, startDate, startTime, endDate, endTime);
     }
 
     public Meal get(int id) {
@@ -45,6 +46,7 @@ public class MealRestController {
 
     public Meal create(Meal meal) {
         log.info("create {}", meal);
+        checkNew(meal);
         return service.create(meal, AuthorizedUser.id);
     }
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -34,10 +35,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal get(int id, int userId) throws NotFoundException {
-        Meal meal = checkNotFoundWithId(repository.get(id, userId), id);
-        if (meal.getUserId() == userId) {
-            return meal;
-        } else throw new NotFoundException("id=" + id);
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public List<Meal> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+    public List<MealWithExceed> getAllFiltredDateAndTime(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         return repository.getAllFiltredDateAndTime(userId, startDate, startTime, endDate, endTime);
     }
 

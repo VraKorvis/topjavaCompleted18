@@ -49,14 +49,6 @@ public class MealServlet extends HttpServlet {
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
 
-        String strUserID = request.getParameter("userId");
-        if (strUserID!=null){
-            int userId = Integer.parseInt(strUserID);
-            AuthorizedUser.setId(userId);
-            request.setAttribute("meals", mealRestController.getAll());
-            request.getRequestDispatcher("/meals.jsp").forward(request, response);
-        }
-
         if (request.getParameter("filter") != null) {
             String startDate = request.getParameter("startDate");
             String startTime = request.getParameter("startTime");
