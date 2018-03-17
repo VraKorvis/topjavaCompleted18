@@ -22,14 +22,12 @@ import static ru.javawebinar.topjava.UserTestData.ADMIN;
 
 @ContextConfiguration("classpath:spring/spring-app-test.xml")
 @RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class InMemoryAdminRestControllerSpringTest {
 
     @Autowired
     private AdminRestController controller;
 
     @Autowired
-    @Qualifier("inMemoryUserRepository")
     private InMemoryUserRepositoryImpl repository;
 
     @Before

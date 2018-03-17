@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.sql.DataSource;
@@ -25,11 +24,11 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final SimpleJdbcInsert insertUser;
+    private final SimpleJdbcInsert insertMeal;
 
     @Autowired
     public JdbcMealRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.insertUser = new SimpleJdbcInsert(dataSource)
+        this.insertMeal = new SimpleJdbcInsert(dataSource)
                 .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
 
@@ -47,7 +46,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
                 .addValue("datTime", meal.getDateTime());
 
         if (meal.isNew()) {
-            Number newKey = insertUser.executeAndReturnKey(map);
+            Number newKey = insertMeal.executeAndReturnKey(map);
             meal.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
                 "UPDATE meals SET description=:description, calories=:calories, date_time=:datTime WHERE id=:id", map) == 0) {
@@ -58,7 +57,7 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return jdbcTemplate.update("DELETE FROM meals WHERE user_id=?", ROW_MAPPER, userId) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE user_id=? AND id=?", userId, id) != 0;
     }
 
     @Override

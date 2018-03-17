@@ -5,17 +5,17 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean class="ru.javawebinar.topjava.repository.jdbc.JdbcUserRepositoryImpl" id="jdbcUserRepository"/>
+    <!--<bean class="ru.javawebinar.topjava.repository.jdbc.JdbcUserRepositoryImpl" id="jdbcUserRepository"/>-->
 
-   <!-- <bean class="ru.javawebinar.topjava.service.UserServiceImpl" id="userService">
-        <constructor-arg name="repository" ref="jdbcUserRepository"/>
-    </bean>-->
+    <!--<bean class="ru.javawebinar.topjava.service.UserServiceImpl" id="userService">-->
+         <!--<constructor-arg name="repository" ref="jdbcUserRepository"/>-->
+     <!--</bean>-->
 
-   <!-- <bean class="ru.javawebinar.topjava.repository.jdbc.JdbcMealRepositoryImpl" id="jdbcMealRepository"/>
+    <!--<bean class="ru.javawebinar.topjava.repository.jdbc.JdbcMealRepositoryImpl" id="jdbcMealRepository"/>-->
 
-    <bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mealService">
-        <constructor-arg name="repository" ref="jdbcMealRepository"/>
-    </bean>-->
+    <!--<bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mealService">-->
+    <!--<constructor-arg name="repository" ref="jdbcMealRepository"/>-->
+    <!--</bean>-->
 
     <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
 
