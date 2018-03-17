@@ -59,13 +59,6 @@ public class MealServiceTest {
     }
 
     @Test
-    public void getBetweenDateTimes() throws Exception {
-        List<Meal> actual = service.getBetweenDateTimes(LocalDateTime.of(2018, Month.JUNE, 1, 13, 0),
-                LocalDateTime.of(2018, Month.JUNE, 30, 21, 0), USER_ID);
-        assertMatch(actual, LIST_BETWEEN_DATE_TIME);
-    }
-
-    @Test
     public void getAll() throws Exception {
         assertMatch(service.getAll(ADMIN_ID), LIST_MEALS_BY_ADMIN);
     }
