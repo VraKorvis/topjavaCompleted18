@@ -26,7 +26,6 @@ public class MealTestData {
             new Meal(6, LocalDateTime.of(2018, Month.JUNE, 12, 7, 0), "Юзер завтрак", 400)
     );
 
-
     public static void assertMatch(Meal actual, Meal expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "id");
     }

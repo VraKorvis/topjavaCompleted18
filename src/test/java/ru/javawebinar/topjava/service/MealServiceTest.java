@@ -13,7 +13,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 
@@ -36,6 +35,7 @@ public class MealServiceTest {
         // It uses java.util.logging and logged via jul-to-slf4j bridge
         SLF4JBridgeHandler.install();
     }
+
     @Autowired
     private MealService service;
 
@@ -77,6 +77,27 @@ public class MealServiceTest {
     public void create() throws Exception {
         Meal meal = new Meal(LocalDateTime.of(2018, Month.JUNE, 14, 17, 0), "Праздничный ужин", 5000);
         service.create(meal, USER_ID);
-        assertMatch(service.get(7 , USER_ID), meal);
+        assertMatch(service.get(7, USER_ID), meal);
     }
+
+    @Test(expected = NotFoundException.class)
+    public void getForeign() throws Exception {
+        Meal meal = service.get(1, USER_ID);
+        assertMatch(meal, ADMIN_LANCH);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteForeign() throws Exception {
+        service.delete(1, USER_ID);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void updateForeign() throws Exception {
+        Meal meal = new Meal(USER_LANCH);
+        meal.setId(USER_LANCH.getId());
+        meal.setCalories(1111);
+        meal.setDescription("Ланч не админа");
+        service.update(meal, ADMIN_ID);
+    }
+
 }
