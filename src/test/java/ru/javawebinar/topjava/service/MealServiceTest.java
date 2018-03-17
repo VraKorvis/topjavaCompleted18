@@ -17,8 +17,7 @@ import java.time.Month;
 import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -29,7 +28,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-
     static {
         // Only for postgres driver logging
         // It uses java.util.logging and logged via jul-to-slf4j bridge
@@ -39,17 +37,16 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
-
     @Test
     public void get() throws Exception {
-        Meal meal = service.get(1, ADMIN_ID);
+        Meal meal = service.get(100002, ADMIN_ID);
         assertMatch(meal, ADMIN_LANCH);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void delete() throws Exception {
-        service.delete(1, ADMIN_ID);
-        service.get(1, ADMIN_ID);
+        service.delete(100003, ADMIN_ID);
+        assertMatch(service.getAll(ADMIN_ID), LIST_MEALS_BY_ADMIN_AFTER_DELETE);
     }
 
     @Test
@@ -77,18 +74,17 @@ public class MealServiceTest {
     public void create() throws Exception {
         Meal meal = new Meal(LocalDateTime.of(2018, Month.JUNE, 14, 17, 0), "Праздничный ужин", 5000);
         service.create(meal, USER_ID);
-        assertMatch(service.get(7, USER_ID), meal);
+        assertMatch(service.get(100008, USER_ID), meal);
     }
 
     @Test(expected = NotFoundException.class)
     public void getForeign() throws Exception {
-        Meal meal = service.get(1, USER_ID);
-        assertMatch(meal, ADMIN_LANCH);
+       service.get(100002, USER_ID);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteForeign() throws Exception {
-        service.delete(1, USER_ID);
+        service.delete(1000002, USER_ID);
     }
 
     @Test(expected = NotFoundException.class)
