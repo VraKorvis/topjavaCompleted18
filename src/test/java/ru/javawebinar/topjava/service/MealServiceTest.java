@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -94,6 +95,13 @@ public class MealServiceTest {
         meal.setCalories(1111);
         meal.setDescription("Ланч не админа");
         service.update(meal, ADMIN_ID);
+    }
+
+    @Test(expected = DuplicateKeyException.class)
+    public void createDuplicateDateTimeForOneUser(){
+        Meal meal = new Meal(USER_LANCH);
+        meal.setId(null);
+        service.create(meal, USER_ID);
     }
 
 }
