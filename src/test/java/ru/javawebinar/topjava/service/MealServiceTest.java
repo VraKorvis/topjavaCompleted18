@@ -35,6 +35,9 @@ public class MealServiceTest {
     public final ExpectedException thrown = ExpectedException.none();
 
     @Rule
+    public MyStopWatch stopwatch = new MyStopWatch();
+
+    @Rule
     public final TestWatch tw = new TestWatch();
 
     @AfterClass

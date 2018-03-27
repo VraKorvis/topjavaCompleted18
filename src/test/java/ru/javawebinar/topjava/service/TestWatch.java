@@ -54,7 +54,7 @@ public class TestWatch extends TestWatcher {
         watchedLog += "EndTime: " + LocalDateTime.now() + ", Time: " +
                 timeLine + " ms\n";
 
-        logger.info("TimeLine " + description.getDisplayName() + ": " + timeLine);
+        logger.info("Duration of the test: " + description.getDisplayName() + ": " + timeLine + "ms");
 
     }
 
