@@ -66,6 +66,7 @@ public class MealRestController extends AbstractMealController {
                                            @RequestParam("startTime") LocalTime startTime,
                                            @RequestParam("endDate") LocalDate endDate,
                                            @RequestParam("endTime") LocalTime endTime) {
+
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }
