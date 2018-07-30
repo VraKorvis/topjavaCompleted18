@@ -55,6 +55,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
+
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
@@ -75,21 +76,31 @@
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="<spring:message code="user.password"/>">
                     </div>
+
                 </form>
+
             </div>
+
+
             <div class="modal-footer">
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <span class="fa fa-close" aria-hidden="true"></span>
                     <spring:message code="common.cancel"/>
                 </button>
+
                 <button type="button" class="btn btn-primary" onclick="save()">
                     <span class="fa fa-check" aria-hidden="true"></span>
                     <spring:message code="common.save"/>
                 </button>
+
             </div>
+
+
         </div>
     </div>
 </div>
+
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

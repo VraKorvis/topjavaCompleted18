@@ -40,3 +40,24 @@ $(function () {
     });
     makeEditable();
 });
+
+function updateTable() {
+    $.get(ajaxUrl, fillTable(data));
+}
+
+function checkEnabled(event) {
+    var id = $(event.target).closest("tr").attr("id");
+    var value = $(event.target).is(':checked');
+
+    $.ajax({
+        url: ajaxUrl + id + "?enabled=" + value,
+        type: "PUT",
+        success: function () {
+            $(event.target).closest("tr").attr("data-userEnabled", value);
+            successNoty(value ? "Set enable" : "Set disable");
+        },
+        error: function () {
+            event.target.checked = !event.target.checked;
+        }
+    });
+}

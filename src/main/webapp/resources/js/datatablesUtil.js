@@ -1,6 +1,6 @@
 function makeEditable() {
     $(".delete").click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).closest("tr").attr("id"));
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
@@ -73,4 +73,8 @@ function failNoty(jqXHR) {
         type: "error",
         layout: "bottomRight"
     }).show();
+}
+
+function fillTable(data) {
+    datatableApi.clear().rows.add(data).draw();
 }
