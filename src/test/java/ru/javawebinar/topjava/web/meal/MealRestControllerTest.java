@@ -128,4 +128,42 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(contentJson(MealsUtil.getWithExceeded(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1), USER.getCaloriesPerDay())));
     }
+
+    @Test
+    public void testDublicateDateTime() throws Exception {
+        Meal updated = getDublicated();
+
+        mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/profile/meals/" + MEAL1_ID + "','type':'VALIDATION_ERROR','detail':'dateTime Meal with this dateTime already exists'}"));
+    }
+
+    @Test
+    public void testValidatedUpdate() throws Exception {
+        Meal updated = getUpdated();
+        updated.setCalories(10000);
+
+        mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/profile/meals/" + MEAL1_ID + "','type':'VALIDATION_ERROR','detail':'calories must be between 10 and 5000'}"));
+    }
+
+    @Test
+    public void testValidatedCreate() throws Exception {
+        Meal created = getCreated();
+        created.setCalories(10000);
+
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(created))
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/profile/meals/','type':'VALIDATION_ERROR','detail':'calories must be between 10 and 5000'}"));
+    }
 }

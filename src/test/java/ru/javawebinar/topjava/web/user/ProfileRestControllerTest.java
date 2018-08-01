@@ -56,4 +56,29 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
         assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
     }
+
+    @Test
+    public void testDublicateEmail() throws Exception {
+        UserTo updatedTo = new UserTo(null, "admin", "admin@gmail.com", "password", 1500);
+
+        mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/profile','type':'VALIDATION_ERROR','detail':'email User with this email already exists'}"));
+    }
+
+    @Test
+    public void testValidatedUpdate() throws Exception {
+        UserTo updatedTo = new UserTo(null, "N", "newemail@ya.ru", "newPassword", 1500);
+
+        mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/profile','type':'VALIDATION_ERROR','detail':'name size must be between 2 and 100'}"));
+    }
+
 }

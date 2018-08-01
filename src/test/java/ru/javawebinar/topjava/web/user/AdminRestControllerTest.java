@@ -89,7 +89,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
-                .content(JsonUtil.writeValue(updated)))
+                .content(jsonWithPassword(updated, "newPass")))
                 .andExpect(status().isOk());
 
         assertMatch(userService.get(USER_ID), updated);
@@ -119,4 +119,43 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(ADMIN, USER)));
     }
+
+    @Test
+    public void testDublicateEmail() throws Exception {
+        User updated = new User(USER);
+        updated.setEmail("admin@gmail.com");
+
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(updated, "newPass")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/admin/users/"+USER_ID+"','type':'VALIDATION_ERROR','detail':'email User with this email already exists'}"));
+    }
+
+    @Test
+    public void testValidatedUpdate() throws Exception {
+        User updated = new User(USER);
+        updated.setName("U");
+
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(updated, "newPass")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/admin/users/" + USER_ID + "','type':'VALIDATION_ERROR','detail':'name size must be between 2 and 100'}"));
+    }
+
+    @Test
+    public void testValidatedCreate() throws Exception {
+        User expected = new User(null, "N", "new@gmail.com", "newPass", 2300, Role.ROLE_USER, Role.ROLE_ADMIN);
+
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(expected, "newPass")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().json("{'url':'http://localhost/rest/admin/users/','type':'VALIDATION_ERROR','detail':'name size must be between 2 and 100'}"));
+    }
+
 }
