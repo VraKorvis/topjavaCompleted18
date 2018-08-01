@@ -45,7 +45,7 @@ $(function () {
             "url": ajaxUrl,
             "dataSrc": ""
         },
-        "paging": false,
+        "paging": true,
         "info": true,
         "columns": [
             {

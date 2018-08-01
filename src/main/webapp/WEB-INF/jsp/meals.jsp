@@ -64,8 +64,8 @@
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
-        <table class="table table-striped" id="datatable">
-            <thead>
+        <table class="table table-striped table-success" id="datatable">
+            <thead class="thead-inverse">
             <tr>
                 <th><spring:message code="meal.dateTime"/></th>
                 <th><spring:message code="meal.description"/></th>
