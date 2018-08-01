@@ -3,12 +3,15 @@ package ru.javawebinar.topjava.web.meal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.validator.MealValidator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,7 +25,15 @@ public abstract class AbstractMealController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    protected MealValidator mealValidator;
+
+    @Autowired
     private MealService service;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(mealValidator);
+    }
 
     public Meal get(int id) {
         int userId = AuthorizedUser.id();

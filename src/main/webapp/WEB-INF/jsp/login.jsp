@@ -16,6 +16,7 @@
                 <span class="fa fa-sign-in"></span>
             </button>
         </form:form>
+        <jsp:include page="fragments/locale.jsp"/>
     </div>
 </nav>
 
